@@ -60,32 +60,69 @@
       <div class="starter-template">
         <h1>Here is a tweet:</h1>
         <div class="lead" ></div>
+        <div class="user" onclick="showTweets()"></div>
         <button>Get Another Tweet</button>
       </div>
 
    <script>
 
+        var $newObj = [];
         var switcher = function(){
               var index = streams.home.length - 1; 
               var tweet = streams.home[index]; 
-              console.log(streams.home[index]);
+              
               var $tweet = $('<div></div>');
-              //var $user = this.tweet.user;
+              var $userDiv = $('<div></div>');
+
               $tweet.text('@' + tweet.user + ': ' + tweet.message + '  ' + tweet.created_at);
-              console.log($tweet);
+              
+              //----------------
+              var $userStream = {};
+              for(key in streams.users) {
+                if(key === tweet.user) {
+                  $userStream[key] = streams.users[key];
+                }
+              } 
+              
+
+              console.log($userStream[tweet.user]);
+              for (var i = 0; i < $userStream[tweet.user].length; i++) {
+                console.log($userStream[tweet.user][i].message);
+                $newObj[i] = $userStream[tweet.user][i].message;
+              }
+              //$userStreamString = JSON.stringify($userStream)
+              //console.log($userStreamString);
+
+              //------------------
+
+
+              $userDiv.text('Other tweets by ' + tweet.user);
+
+              
+             
+             
 
               //clear it out
               $(".lead").html('');
               $(".lead").append($tweet);
+              $(".user").html('');
+              $(".user").append($userDiv);
+
+
         }; 
         switcher();
+
+
       
         $(function() {
           $( "input[type=submit], a, button" )
             .button()
             .click(switcher);
         }); 
-
+        var showTweets = function(){
+                $(".user").html('');
+                $(".user").append($newObj);
+              };
 
 
       </script>
